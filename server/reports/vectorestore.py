@@ -1,4 +1,5 @@
 import os
+
 import time
 import asyncio
 from pathlib import Path
@@ -8,7 +9,7 @@ from pinecone import Pinecone, ServerlessSpec
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from ..config.db import reports_collection
 from typing import List
 from fastapi import UploadFile
@@ -41,7 +42,7 @@ async def load_vectorstore(uploaded_files:List[UploadFile],uploaded:str,doc_id:s
         Save files, chunk texts, embed texts, upsert in Pinecone and write metadata to MongoDB
     """
     
-    embed_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")       
+    embed_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")       
     for file in uploaded_files:
         filename=Path(file.filename).name
         save_path=Path(UPLOAD_DIR)/f"{doc_id}_{filename}"
